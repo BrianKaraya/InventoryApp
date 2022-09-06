@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<meta charset="ISO-8859-1">
+<title>[[${pageTitle}]]</title>
+<link rel="stylesheet" type="text/css"
+	href="/webjars/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
+
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script type="text/javascript"
+	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+	<div>
+		<div>
+			<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+				<a class="navbar-brand" th:href="@{/}"><img alt="App logo"
+					th:src="@{/images/shop.jpg}" style="width: 100px; height: 50px;"
+					src="" /></a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#topNavbar">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="topNavbar">
+					<ul class="navbar-nav">
+						<li class="nav-item"><a class="nav-link" th:href="@{/users}"
+							sec:authorize="hasAuthority('Admin')">Users</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/products}">Products</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/products/new}" sec:authorize="hasAuthority('Admin')">Create
+								product</a></li>
+
+
+						<th:block sec:authorize="hasAnyAuthority('Admin','Editor')">
+							<li class="nav-item"><a class="nav-link"
+								th:href="@{/category}">Categories</a></li>
+							<li class="nav-item"><a class="nav-link"
+								th:href="@{/category/new}" )>Create category</a></li>
+						</th:block>
+						<li class="ml-5"><span class="fas fa-user fa-2x icon-orange"></span></li>
+
+						<li class="nav-item icon-green ml-1"><a
+							class="nav-link text-warning"
+							sec:authentication="principal.fullname"></a> <span>
+								<li class="">
+									<button class="btn btn-secondary icon-lime" type="button"
+										id="logoutLink">Logout</button>
+							</li>
+						</span></li>
+
+
+
+
+
+
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<div>
+			<h2>Manage Users | [[${pageTitle}]]</h2>
+			<form th:action="@{/users/save}" method="post"
+				style="max-width: 700px; margin: 0 auto"
+				enctype="multipart/form-data" th:object="${user}" action="">
+				<div class="border border-secondary rounded p-3">
+					<div class="form-group row">
+						<label class="col-sm-4 col-form-label">Email</label>
+						<div class="col-sm-8">
+							<input type="email" class="form-control" th:field="*{email}"
+								required minlength="8" maxlength="128" />
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-4 col-form-label">First Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" th:field="*{firstname}"
+								required minlength="2" maxlength="45" />
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-4 col-form-label">Last Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" th:field="*{lastname}"
+								required minlength="2" maxlength="45" />
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-4 col-form-label">Password</label>
+						<div class="col-sm-8">
+							<input th:if="${user.id == null}" type="password"
+								class="form-control" th:field="*{password}" required
+								minlength="8" maxlength="20" /> <input
+								th:if="${user.id != null}" type="password" class="form-control"
+								th:field="*{password}" minlength="8" maxlength="20" />
+
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-4 col-form-label">Roles</label>
+						<div class="col-sm-8">
+							<th:block th:each="role : ${listRoles}">
+								<input type="checkbox" th:field="*{roles}"
+									th:text="${role.name}" th:value="${role.id}" class="m-2" />
+								<br />
+							</th:block>
+
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-4 col-form-label">Enabled</label>
+						<div class="col-sm-8">
+
+							<input type="checkbox" th:field="*{enabled}" />
+
+
+
+						</div>
+					</div>
+
+					<div class="form-group row text-center">
+
+
+
+
+
+
+						<div class="col-sm-8 margin">
+							<label class="col-sm-4 col-form-label">Photos</label> <input
+								type="file" id="fileImage" accept="image/png,image/jpeg"
+								name="image" required />
+
+
+
+
+
+						</div>
+					</div>
+
+
+					<div class="text-center">
+						<input type="submit" value="Save" class="btn btn-primary m-3" />
+						<input type="button" value="Cancel" class="btn btn-secondary"
+							id="cancelButton" />
+					</div>
+				</div>
+			</form>
+		</div>
+		<div></div>
+	</div>
+
+	<!-- <script src="text/javascript">
+$(document).ready(function(){
+$("#buttonCancel").on("click", function(){
+window.location = "[[@{/users}]]";
+});
+$("#fileImage").change(function(){
+showImageThumbnail(this);
+});
+});
+
+function showImageThumbnail(fileinput){
+}
+</script> -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#logoutLink").on("click", function(e) {
+				e.preventDefault();
+				document.logoutForm.submit();
+			})
+		})
+	</script>
+
+
+
+</body>
+
+</html>
