@@ -26,7 +26,5 @@ public class AppController {
 	public String viewLoginPage() {
 		return "login";
 	}
-	
-	
 
 }

@@ -21,7 +21,7 @@ public class FileUploadUtil {
 			Path filePath = uploadPath.resolve(fileName);
 			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException ex) {
-			throw new IOException("Could not save file" + fileName,ex);
+			throw new IOException("Error saving uploaded file: " + fileName,ex);
 		}
 	}
 

@@ -11,28 +11,22 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="roles")
+@Table(name = "roles")
 public class Role {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column(length = 25, nullable = false, unique = true)
 	private String name;
-	
-	
-	
-	
-	
-	 
-	
+
 	public Role() {
-		
+
 	}
 
 	public Role(String name) {
-		
+
 		this.name = name;
 	}
 
@@ -73,13 +67,5 @@ public class Role {
 	public String toString() {
 		return name;
 	}
-	
-	
-
-	
-	
-	
-	
-	
 
 }

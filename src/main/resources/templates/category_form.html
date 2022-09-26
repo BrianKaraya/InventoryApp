@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head xmlns:th="www.thymeleaf.org">
 <meta charset="ISO-8859-1">
@@ -42,10 +42,7 @@
 						<li class="nav-item icon-green ml-1"><a
 							class="nav-link text-warning"
 							sec:authentication="principal.fullname"></a> <span>
-								<li class="">
-									<button class="btn btn-secondary icon-lime" type="button"
-										id="logoutLink">Logout</button>
-							</li>
+								<li class=""></li>
 						</span></li>
 
 
@@ -82,13 +79,6 @@
 		</form>
 
 	</div>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#logoutLink").on("click", function(e) {
-				e.preventDefault();
-				document.logoutForm.submit();
-			})
-		})
-	</script>
+
 </body>
 </html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head  xmlns:th="http://www.thymeleaf.org"
+<head xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <meta charset="ISO-8859-1">
 <title>Users-InventoryApp</title>
@@ -43,17 +43,11 @@
 						<li class="nav-item icon-green ml-1"><a
 							class="nav-link text-warning"
 							sec:authentication="principal.fullname"></a> <span>
-								<li class="">
+								<!-- <li class="">
 									<button class="btn btn-secondary icon-lime" type="button"
 										id="logoutLink">Logout</button>
-							</li>
+							</li> -->
 						</span></li>
-
-
-
-
-
-
 					</ul>
 				</div>
 			</nav>
@@ -75,9 +69,6 @@
 						<th>Role</th>
 						<th>Enabled</th>
 						<th></th>
-
-
-
 						<th></th>
 					</tr>
 				</thead>
@@ -89,10 +80,7 @@
 							<span th:if="${user.photos == null}"
 							class="fa-solid fa-image-portrait fa-3x icon-dark"></span> 
 							<img th:if="${user.photos != null}" th:src="@{${users.photosImagePath}}" style="width: 100px"/>
-							
-							  
-							 
-							 </td> -->
+						</td> -->
 						<td><img th:src="@{${user.photosImagePath}}"
 							style="width: 100px; height: 100px;"></td>
 
@@ -109,11 +97,6 @@
 							&nbsp; <a class="fa-solid fa-trash-can fa-1x icon-dark"
 							th:href="@{'/users/delete/' + ${user.id}}" title="Delete user"></a>
 						</td>
-
-
-
-
-
 					</tr>
 					</th>
 
@@ -124,11 +107,13 @@
 
 
 
-	<!-- <div class="container text-center" >
-		<h1>Users</h1>
-		<h3><a th:href="@{/list_users}">List of users</a></h3>
-		
-	</div>  -->
-
+<script type="text/javascript">
+		$(document).ready(function() {
+			$("#logoutLink").on("click", function(e) {
+				e.preventDefault();
+				document.logoutForm.submit();
+			})
+		})
+	</script>
 </body>
 </html>

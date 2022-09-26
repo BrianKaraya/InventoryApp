@@ -58,13 +58,7 @@
 									<button class="btn btn-secondary icon-lime" type="button"
 										id="logoutLink">Logout</button>
 							</li>
-						</span></li>
-
-
-
-
-
-
+						</span></li> 
 					</ul>
 				</div>
 			</nav>
@@ -76,6 +70,7 @@
 				Welcome<a th:href="@{/account}"
 					sec:authentication="principal.fullname"></a> <span
 					sec:authentication="principal.authorities"></span>
+					
 			</div>
 
 

@@ -27,8 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.inventory.FileUploadUtil;
-import com.inventory.UserNotFoundException;
-import com.inventory.UserService;
 import com.inventory.entities.product.Product;
 import com.inventory.entities.role.Role;
 
@@ -63,18 +61,29 @@ public class UserController {
 	}
 
 	@PostMapping("/users/save")
-	public String saveUser(User user, @RequestParam("image") MultipartFile multipartFile) throws IOException {
-		
-		if (!multipartFile.isEmpty()) {
-			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-			user.setPhotos(fileName);
-			User savedUser = service.save(user);
-			String uploadDir = "user-photos/" + savedUser.getId();
-			
-			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-			
+	public String saveUser(User user, @RequestParam("image") MultipartFile multipartFile,RedirectAttributes ra) throws IOException {
+
+		String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+		user.setPhotos(fileName);
+
+		User savedUser = service.save(user);
+
+		String uploadDir = "user-photos/" + savedUser.getId();
+		Path uploadPath = Paths.get(uploadDir);
+
+		if (!Files.exists(uploadPath)) {
+			Files.createDirectories(uploadPath);
 		}
-		//service.save(user);
+
+		try (InputStream inputStream = multipartFile.getInputStream()) {
+			Path filePath = uploadPath.resolve(fileName);
+			//System.out.println(filePath.toFile().getAbsolutePath());
+			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			throw new IOException("Could not save uploaded file: " + fileName);
+		}
+
+		ra.addFlashAttribute("message", "The user has been saved succesfully.");
 		return "redirect:/users";
 	}
 
@@ -98,56 +107,19 @@ public class UserController {
 
 	}
 
-	
-	  @GetMapping("/users/delete/{id}") 
-	  public String deleteUser(@PathVariable(name
-	  = "id") Integer id, Model model, RedirectAttributes redirectAttributes) { try
-	  { service.delete(id); redirectAttributes.addFlashAttribute("message",
-	  "The user ID " + id + "has been deleted");
-	  
-	  } catch (UserNotFoundException ex) {
-	  redirectAttributes.addFlashAttribute("message", ex.getMessage());
-	  
-	  } return "redirect:/users";
-	  
-	  }
-	  
-		/*
-		 * @PostMapping("/category/save") public String
-		 * saveCategory(@ModelAttribute(name = "category") Category category,
-		 * RedirectAttributes ra,
-		 * 
-		 * @RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
-		 * 
-		 * String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-		 * category.setCatLogo(fileName);
-		 * 
-		 * //repo.save(category); Category savedCategory = repo.save(category); String
-		 * uploadDir = "/category_logos" + savedCategory.getId(); Path uploadPath =
-		 * Paths.get(uploadDir);
-		 * 
-		 * if (Files.exists(uploadPath)) { Files.createDirectories(uploadPath);
-		 * 
-		 * }
-		 * 
-		 * try(InputStream inputStream = multipartFile.getInputStream()){ Path filePath
-		 * = uploadPath.resolve(fileName); System.out.println(filePath.toString());
-		 * 
-		 * Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-		 * }catch (IOException e) { throw new IOException("Could not save uploaded file"
-		 * + fileName); };
-		 * 
-		 * 
-		 * ra.addFlashAttribute("message",
-		 * "The category has been succesfully inserted.");
-		 * 
-		 * 
-		 * 
-		 * return "redirect:/category"; }
-		 */
-		
-	 
-	
-	
+	@GetMapping("/users/delete/{id}")
+	public String deleteUser(@PathVariable(name = "id") Integer id, Model model,
+			RedirectAttributes redirectAttributes) {
+		try {
+			service.delete(id);
+			redirectAttributes.addFlashAttribute("message", "The user ID " + id + "has been deleted");
+
+		} catch (UserNotFoundException ex) {
+			redirectAttributes.addFlashAttribute("message", ex.getMessage());
+
+		}
+		return "redirect:/users";
+
+	}
 
 }
