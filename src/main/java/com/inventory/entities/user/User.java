@@ -43,7 +43,7 @@ public class User {
 	private String password;
 
 	@Column(length = 45)
-	public String photos;
+	private String photos;
 
 	private boolean isEnabled;
 

@@ -8,6 +8,8 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.7.1</version>
 		<!-- <relativePath>/InventoryApp.pom.xml</relativePath> -->
+		
+		
 	</parent>
 	<groupId>com.inventory</groupId>
 	<artifactId>InventoryApp</artifactId>
@@ -113,6 +115,12 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+		        <groupId>com.heroku.sdk</groupId>
+		        <artifactId>heroku-maven-plugin</artifactId>
+		        <version>3.0.3</version>
+      		</plugin>
 		</plugins>
 	</build>
 

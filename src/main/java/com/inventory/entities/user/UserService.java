@@ -6,11 +6,13 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.inventory.entities.role.Role;
 import com.inventory.entities.role.RoleRepository;
 
 @Service
+
 public class UserService {
 	@Autowired
 	private UserRepository userRepo;

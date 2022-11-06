@@ -34,12 +34,19 @@ import com.inventory.entities.role.Role;
 
 @Controller
 public class UserController {
+	
+	
 	@Autowired
 	private UserService service;
 
 	@Autowired
 	private UserRepository repo;
+	
+	
+	
+	
 
+	
 	@GetMapping("/users")
 	public String listAll(Model model) {
 
